@@ -4,7 +4,7 @@
 
 	import "@carbon/styles/css/styles.css";
 	import "@carbon/charts/styles.css";
-    import type { World } from "../physicslib/world";
+    import type { World } from "../physics/world";
 	export let world: World;
 	let temp = 0;
 	let data: any[] = [
@@ -24,8 +24,10 @@ export function addData(datapoint: any[]){
 }
 
 export function update(){
-	data.push({"group": "Elephant", "key": world.time/1000, "value": world.dynamicBodies[1].vel.y });
-	data.push({"group": "Ball", "key": world.time/1000, "value": world.dynamicBodies[0].vel.y });
+	data.push({"group": "Ball 1", "key": world.realTime()/1000, "value": 0 -world.dynamicBodies[0].vel.y });
+	data.push({"group": "Ball 2", "key": world.realTime()/1000, "value": 0 - world.dynamicBodies[1].vel.y });
+	data.push({"group": "Ball 3", "key": world.realTime()/1000, "value": 0 - world.dynamicBodies[2].vel.y });
+
 
 	data = data;
 }

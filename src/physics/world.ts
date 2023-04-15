@@ -1,8 +1,7 @@
-import type { NoImage } from "carbon-icons-svelte";
 import { type StaticBody,  DynamicBody } from "./bodies";
 import { collision } from "./collisions";
 import { Vector } from "./vector";
-import { Circle } from "./shapes";
+import { Circle, Elephant } from "./shapes";
 export class World {
     staticBodies: StaticBody[];
     dynamicBodies: DynamicBody[];
@@ -11,6 +10,7 @@ export class World {
     forces: Vector[];
     speed: number;
     time: number;
+    tminus : number;
     constructor(statics: StaticBody[] = [], dynamics: DynamicBody[] = [], width: number = 500, height: number = 500, forces: Vector[] = []){
         this.staticBodies = statics;
         this.dynamicBodies = dynamics;
@@ -19,6 +19,7 @@ export class World {
         this.forces = forces;
         this.speed = 1;
         this.time = 0;
+        this.tminus = 0;
     }
     update(t: number, ctx: CanvasRenderingContext2D){
         // this.staticBodies.forEach((b)=>{
@@ -46,13 +47,23 @@ export class World {
         return sum;
     }
 
+    realTime(){
+        return this.time - this.tminus;
+    }
+
 
 }
 
 export function jsontoworld(input: any): World{
     let world = new World();
     input.dynamicBodies.forEach((body: any)=>{
-        world.dynamicBodies.push(new DynamicBody(new Vector(body.x,body.y), new Vector(body.vx,body.vy),new Vector(body.ax, body.ay),body.mass,new Circle(body.radius)));
+        if (body.radius == 50){
+            world.dynamicBodies.push(new DynamicBody(new Vector(body.x,body.y), new Vector(body.vx,body.vy),new Vector(body.ax, body.ay),body.mass,new Elephant(body.radius)));
+        }
+        else {
+            world.dynamicBodies.push(new DynamicBody(new Vector(body.x,body.y), new Vector(body.vx,body.vy),new Vector(body.ax, body.ay),body.mass,new Circle(body.radius)));
+
+        }
     });
     return world;
 }
@@ -60,6 +71,7 @@ export function jsontoworld(input: any): World{
 export function worldtojson(world: World){
     let result: any = {"dynamicBodies":[]};
     world.dynamicBodies.forEach((body)=>{
+        
         result.dynamicBodies.push({"x":body.pos.x,"y":body.pos.y,"vx":body.vel.x,"vy":body.vel.y,"ax":body.acc.x,"ay":body.acc.y,"mass":body.mass,"radius":body.shape.radius});
     })
     return result;

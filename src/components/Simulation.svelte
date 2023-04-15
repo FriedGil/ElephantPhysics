@@ -1,19 +1,29 @@
 <script lang="ts">
         import { onMount } from "svelte";
-        import { Elephant, Circle } from "../physicslib/shapes";
-        import { DynamicBody } from "../physicslib/bodies";
-        import { Vector } from "../physicslib/vector";
-        import type { World } from "../physicslib/world";
+        import { Elephant, Circle } from "../physics/shapes";
+        import { DynamicBody } from "../physics/bodies";
+        import { Vector } from "../physics/vector";
+        import {jsontoworld, worldtojson} from "../physics/world";
+        import type { World } from "../physics/world";
         import Screen from "./Screen.svelte";
         import Pause from "carbon-icons-svelte/lib/Pause.svelte";
-        import Play from "carbon-icons-svelte/lib/Play.svelte";
-        import { Button, ButtonSet, Column, Grid, Row } from 'carbon-components-svelte';
+        import Add from "carbon-icons-svelte/lib/Add.svelte";
+        import Reset from "carbon-icons-svelte/lib/Reset.svelte";
+        import Copy from "carbon-icons-svelte/lib/Copy.svelte";
+        import Checkbox from "carbon-icons-svelte/lib/Checkbox.svelte";
+        import EarthAmericas from "carbon-icons-svelte/lib/EarthAmericas.svelte";
+        import { Button, ButtonSet, Column, Grid, Row, SideNavDivider } from 'carbon-components-svelte';
+        import { Tile } from "carbon-components-svelte";
         import Data from "./Data.svelte";
         import { Slider } from "carbon-components-svelte";
+        import { CopyButton } from "carbon-components-svelte";
+        import JsonURL from "@jsonurl/jsonurl";
 
-        export let world: World;
+        export let config: any;
+        let world: World = jsontoworld(config);
         let screen: Screen;
         let data: Data;
+        let url: string;
         let updateIntervalId;
 
 
@@ -26,15 +36,13 @@
 
         onMount(()=>{
             updateIntervalId = setInterval(update, 500/world.speed);
+            url = window.location.origin;
         });
-
-        function resetInterval(){
-            // on:change={resetInterval}
-            updateIntervalId = setInterval(update, 500/world.speed);
+        function reset(){
+            world = jsontoworld(config);
+            world.tminus = screen.getT();
+            data.reset();
         }
-	
-        
-    
     </script>
 
 
@@ -42,21 +50,43 @@
     <Row>
     <Column>
         <Row>
-            <Screen bind:this={screen} world = {world}/>
+            <Tile>
+                <Screen bind:this={screen} world = {world}/>
+            </Tile>
         </Row>
-        <Row>
-            <ButtonSet>
-                <Button    iconDescription="Pause" icon={Pause} on:click={screen.pause}>
+
+        <Tile>
+        <h2>
+            Control Panel
+        </h2>
+            <Row>
+                <Button    size="field" iconDescription="Pause" kind="primary"  icon={Pause} on:click={screen.pause}>
                     Pause
                 </Button>
-                <Button    iconDescription="Reset"  on:click={data.reset}>
+                <Button    size="field" iconDescription="Reset"  kind="danger" icon={Reset} on:click={reset}>
                     Reset
                 </Button>
-            </ButtonSet>        
+                <Tile light>
+                    <Slider hideTextInput   min={1} max={10} labelText="Speed" bind:value={world.speed} /> 
+                </Tile>
         </Row>
         <Row>
-            <Slider   min={1} max={10} labelText="Speed" bind:value={world.speed} /> 
-         </Row>
+            <Button   size="field" kind="secondary"  iconDescription="Add Body" icon={Checkbox}>
+                Edit Bodies
+            </Button>
+            <Button    size="field" kind="tertiary" iconDescription="Add Force"  icon={EarthAmericas} >
+                Edit World
+            </Button>
+            <Button    size="field" kind="secondary" iconDescription="Add Force"  icon={Add} >
+                Add Slider
+            </Button>
+            <Button  size="field" kind="ghost" icon={Copy} >
+                Copy
+            </Button>
+            <!-- <CopyButton text="{url + "/load/" + JsonURL.stringify(config)}" /> -->
+        </Row>
+        </Tile>
+        
     </Column>
     <Column>
         <Data bind:this={data} world = {world}/>

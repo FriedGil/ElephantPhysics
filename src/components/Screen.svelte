@@ -1,7 +1,7 @@
 <script lang="ts">
     import { Canvas, Layer, t } from 'svelte-canvas';
     import type { Render } from "svelte-canvas";
-    import type { World } from '../physicslib/world';
+    import type { World } from '../physics/world';
     export let world: World;
     let render: Render;
     let timeStamp = 0;
@@ -13,8 +13,9 @@
         if (!paused){
             context.beginPath();
             world.update($t-timeStamp, context);
-            timeStamp = $t
             world.time = $t;
+            timeStamp = $t
+            console.log()
             context.fill();
         }
         else{
@@ -23,13 +24,22 @@
     };
 
     export function pause(){
-        if (paused) paused = false;
-        else paused = true;
+        world.tminus += $t-timeStamp;
         timeStamp = $t;
+        if (paused){
+                paused = false;
+        }
+        else {
+            paused = true;
+        }
     }
 
     export function isRunning(){
         return !paused;
+    }
+
+    export function getT(){
+        return $t;
     }
 
   </script>

@@ -18,7 +18,6 @@
       Row,
       Column,
     } from "carbon-components-svelte";
-    import Screen from "../components/Screen.svelte";
   
     let isSideNavOpen = false;
 

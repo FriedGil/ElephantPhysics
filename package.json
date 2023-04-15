@@ -24,6 +24,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@jsonurl/jsonurl": "^1.1.7",
 		"carbon-icons-svelte": "^11.4.0",
 		"svelte-canvas": "^0.9.3"
 	}
