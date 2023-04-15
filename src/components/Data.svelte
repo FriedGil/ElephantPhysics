@@ -1,32 +1,32 @@
-<script>
-// @ts-nocheck
+<script lang="ts">
 
 	import { LineChart } from "@carbon/charts-svelte";
 
 	import "@carbon/styles/css/styles.css";
 	import "@carbon/charts/styles.css";
-	let data = [
-	{
-		"group": "Dataset 1",
-		"key": 0,
-		"value": 34200}
-		,
-	{
-		"group": "Dataset 1",
-		"key": 1,
-		"value": 23500
-	},
-	{
-		"group": "Dataset 1",
-		"key": 2,
-		"value": 53100
-	},
+    import type { World } from "../physicslib/world";
+	export let world: World;
+	let temp = 0;
+	let data: any[] = [
+	// {
+	// 	"group": "Dataset 1",
+	// 	"key": 0,
+	// 	"value": 34200}
+	// 	,
+	// {
 ]
 export function reset(){
 	data = [];
 }
-export function addData(datapoint){
+export function addData(datapoint: any[]){
 	data.push(datapoint);
+	data = data;
+}
+
+export function update(){
+	data.push({"group": "Elephant", "key": world.time/1000, "value": world.dynamicBodies[1].vel.y });
+	data.push({"group": "Ball", "key": world.time/1000, "value": world.dynamicBodies[0].vel.y });
+
 	data = data;
 }
 </script>
@@ -34,17 +34,15 @@ export function addData(datapoint){
 <LineChart
 	data= {data}
 	options={{
-	"title": "Elephant",
+	"title": "Y Velocity over Time",
 	"axes": {
 		"bottom": {
 			"title": "Time",
 			"mapsTo": "key",
-			"scaleType": "labels"
 		},
 		"left": {
 			"mapsTo": "value",
 			"title": "Velocity",
-			"scaleType": "linear"
 		}
 	},
 	"height": "400px"
