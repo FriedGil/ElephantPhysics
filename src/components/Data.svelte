@@ -27,8 +27,6 @@ export function update(){
 	data.push({"group": "Ball 1", "key": world.realTime()/1000, "value": 0 -world.dynamicBodies[0].vel.y });
 	data.push({"group": "Ball 2", "key": world.realTime()/1000, "value": 0 - world.dynamicBodies[1].vel.y });
 	data.push({"group": "Ball 3", "key": world.realTime()/1000, "value": 0 - world.dynamicBodies[2].vel.y });
-
-
 	data = data;
 }
 </script>

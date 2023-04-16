@@ -72,7 +72,7 @@ export function worldtojson(world: World){
     let result: any = {"dynamicBodies":[]};
     world.dynamicBodies.forEach((body)=>{
         
-        result.dynamicBodies.push({"x":body.pos.x,"y":body.pos.y,"vx":body.vel.x,"vy":body.vel.y,"ax":body.acc.x,"ay":body.acc.y,"mass":body.mass,"radius":body.shape.radius});
+        result.dynamicBodies.push({"id": body.id, "x":body.pos.x,"y":body.pos.y,"vx":body.vel.x,"vy":body.vel.y,"ax":body.acc.x,"ay":body.acc.y,"mass":body.mass,"radius":body.shape.radius});
     })
     return result;
 }

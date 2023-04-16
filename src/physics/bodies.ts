@@ -2,13 +2,15 @@ import type { Shape } from "./shapes";
 import { Vector } from "./vector";
 
 export class DynamicBody {
+    id: String;
     pos: Vector;
     vel: Vector;
     acc: Vector;
     mass: number;
     shape: Shape;
     forces: Vector[];
-    constructor(pos: Vector, vel: Vector, acc: Vector, mass: number, shape: Shape){
+    constructor(pos: Vector, vel: Vector, acc: Vector, mass: number, shape: Shape, id:string = "Unnamed"){
+        this.id = id;
         this.pos = pos;
         this.vel = vel;
         this.acc = acc;

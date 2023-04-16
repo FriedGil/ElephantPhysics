@@ -12,19 +12,21 @@
         import Copy from "carbon-icons-svelte/lib/Copy.svelte";
         import Checkbox from "carbon-icons-svelte/lib/Checkbox.svelte";
         import EarthAmericas from "carbon-icons-svelte/lib/EarthAmericas.svelte";
-        import { Button, ButtonSet, Column, Grid, Row, SideNavDivider } from 'carbon-components-svelte';
+        import { Button, ButtonSet, Column, CopyButton, Grid, Row, SideNavDivider } from 'carbon-components-svelte';
         import { Tile } from "carbon-components-svelte";
         import Data from "./Data.svelte";
         import { Slider } from "carbon-components-svelte";
-        import { CopyButton } from "carbon-components-svelte";
         import JsonURL from "@jsonurl/jsonurl";
+        import BodiesModal from "./BodiesModal.svelte";
+        import SlidersModal from "./SlidersModal.svelte";
+        import WorldModal from "./WorldModal.svelte";
 
         export let config: any;
         let world: World = jsontoworld(config);
         let screen: Screen;
         let data: Data;
         let url: string;
-        let updateIntervalId;
+        let bmod: BodiesModal, smod: SlidersModal, wmod: WorldModal;
 
 
 
@@ -35,8 +37,9 @@
         }
 
         onMount(()=>{
-            updateIntervalId = setInterval(update, 500/world.speed);
             url = window.location.origin;
+            setInterval(() => {update()}, 500)
+
         });
         function reset(){
             world = jsontoworld(config);
@@ -51,10 +54,13 @@
     <Column>
         <Row>
             <Tile>
+                <h2>
+                    Screen
+                </h2>
                 <Screen bind:this={screen} world = {world}/>
             </Tile>
         </Row>
-
+        <Row>
         <Tile>
         <h2>
             Control Panel
@@ -69,29 +75,32 @@
                 <Tile light>
                     <Slider hideTextInput   min={1} max={10} labelText="Speed" bind:value={world.speed} /> 
                 </Tile>
-        </Row>
+            </Row>
         <Row>
-            <Button   size="field" kind="secondary"  iconDescription="Add Body" icon={Checkbox}>
+            <Button   size="field" kind="secondary"  iconDescription="Edit Bodies" icon={Checkbox} on:click={bmod.toggle} on:click={screen.pauseNoToggle}>
                 Edit Bodies
             </Button>
-            <Button    size="field" kind="tertiary" iconDescription="Add Force"  icon={EarthAmericas} >
+            <Button    size="field" kind="tertiary" iconDescription="Edit World"  icon={EarthAmericas} on:click={wmod.toggle} on:click={screen.pauseNoToggle}>
                 Edit World
             </Button>
-            <Button    size="field" kind="secondary" iconDescription="Add Force"  icon={Add} >
+            <Button    size="field" kind="secondary" iconDescription="Add Slider"  icon={Add} on:click={smod.toggle} on:click={screen.pauseNoToggle}>
                 Add Slider
             </Button>
-            <Button  size="field" kind="ghost" icon={Copy} >
+            <!-- <Button  size="field" kind="ghost" icon={Copy} >
                 Copy
-            </Button>
-            <!-- <CopyButton text="{url + "/load/" + JsonURL.stringify(config)}" /> -->
+            </Button> -->
+            <CopyButton text="{url + "/load/" + JsonURL.stringify(config)}"/>
         </Row>
-        </Tile>
+    </Tile>
+    </Row>
         
     </Column>
     <Column>
         <Data bind:this={data} world = {world}/>
     </Column>
-    
     </Row>
 </Grid>
 
+<BodiesModal bind:this={bmod} bind:config={config}/>
+<WorldModal bind:this={wmod} />
+<SlidersModal bind:this={smod} />

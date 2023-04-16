@@ -5,7 +5,7 @@
     export let world: World;
     let render: Render;
     let timeStamp = 0;
-    export let paused:boolean = false;
+    export let paused: boolean = false;
     $: w = world.width;
     $: h = world.height;
     
@@ -32,6 +32,13 @@
         else {
             paused = true;
         }
+    }
+
+    export function pauseNoToggle(){
+        world.tminus += $t-timeStamp;
+        timeStamp = $t;
+        paused = true;
+        
     }
 
     export function isRunning(){
