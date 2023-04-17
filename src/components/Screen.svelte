@@ -13,12 +13,13 @@
 
     onMount(()=>{
         widthmin = window.innerWidth;
-        if (w>widthmin) world.width = widthmin;
+        world.width = Math.min(widthmin/1.5,500);
     })
 
     function handleResize () {
+        console.log("resizing");
         widthmin = window.innerWidth;
-        if (w>widthmin) world.width = widthmin;
+        world.width = Math.min(widthmin/1.5,500);
 	}
 
    
@@ -63,11 +64,9 @@
     }
 
   </script>
-  {#key widthmin}
-  <Canvas width={w} height={h} style="outline-style: dotted;">
+  <Canvas width={Math.min(widthmin/1.5,500)} height={h} style="outline-style: dotted;">
     <Layer {render} />
   </Canvas>    
-  {/key}
 
   <svelte:window on:resize|passive={handleResize} />
 
