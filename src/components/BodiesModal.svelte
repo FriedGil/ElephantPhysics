@@ -73,6 +73,7 @@
         {/key}
       </table>
       <Button>Add Body</Button>
+      
     </ModalBody>
 
     <ModalFooter primaryButtonText="Save Changes"/>
