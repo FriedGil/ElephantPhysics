@@ -29,7 +29,6 @@
         let bmod: BodiesModal, smod: SlidersModal, wmod: WorldModal;
 
 
-
         function update(){
             if (screen.isRunning()){
                 data.update();
@@ -57,7 +56,7 @@
                 <h2>
                     Screen
                 </h2>
-                <Screen bind:this={screen} world = {world}/>
+                <Screen bind:this={screen}  world = {world}/>
             </Tile>
         </Row>
         <Row>
