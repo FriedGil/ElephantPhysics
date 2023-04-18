@@ -13,7 +13,7 @@
 
     onMount(()=>{
         widthmin = window.innerWidth;
-        world.width = Math.min(widthmin/1.5,500);
+        world.width = Math.min(widthmin/1.2,500);
     })
 
     function handleResize () {
@@ -64,7 +64,7 @@
     }
 
   </script>
-  <Canvas width={Math.min(widthmin/1.5,500)} height={h} style="outline-style: dotted;">
+  <Canvas width={Math.min(widthmin/1.2,500)} height={h} style="outline-style: dotted;">
     <Layer {render} />
   </Canvas>    
 
