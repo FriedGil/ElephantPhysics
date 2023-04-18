@@ -57,7 +57,8 @@ export class World {
 export function jsontoworld(input: any): World{
     let world = new World();
     input.dynamicBodies.forEach((body: any)=>{
-        if (body.radius == 50){
+        //body.radius == 50
+        if (true){
             world.dynamicBodies.push(new DynamicBody(new Vector(body.x,body.y), new Vector(body.vx,body.vy),new Vector(body.ax, body.ay),body.mass,new Elephant(body.radius)));
         }
         else {
