@@ -81,11 +81,15 @@ export function jsontoworld(input: any): World {
       );
     }
   });
+  input.objects.forEach((object: object)=>{
+    world.staticBodies.push();
+  });
+
   return world;
 }
 
 export function worldtojson(world: World) {
-  let result: any = { dynamicBodies: [] };
+  let result: any = { dynamicBodies: [], world: {}, objects: [] };
   world.dynamicBodies.forEach((body) => {
     result.dynamicBodies.push({
       id: body.id,
@@ -98,6 +102,9 @@ export function worldtojson(world: World) {
       mass: body.mass,
       radius: body.shape.radius,
     });
+  });
+  result.keys.forEach(()=>{
+    result.world[""]    
   });
   return result;
 }
