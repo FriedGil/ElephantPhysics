@@ -64,7 +64,7 @@
     }
 
   </script>
-  <Canvas width={Math.min(widthmin/1.2,500)} height={h} style="outline-style: dotted;">
+  <Canvas width={Math.min(widthmin/1.2,500)} height={h} style=" box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);">
     <Layer {render} />
   </Canvas>    
 

@@ -66,7 +66,8 @@ export function jsontoworld(input: any): World {
           new Vector(body.vx, body.vy),
           new Vector(body.ax, body.ay),
           body.mass,
-          new Elephant(body.radius)
+          new Elephant(body.radius),
+          body.id,
         )
       );
     } else {
@@ -76,7 +77,8 @@ export function jsontoworld(input: any): World {
           new Vector(body.vx, body.vy),
           new Vector(body.ax, body.ay),
           body.mass,
-          new Circle(body.radius)
+          new Circle(body.radius),
+          body.id,
         )
       );
     }

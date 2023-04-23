@@ -102,5 +102,5 @@
 
 
 <BodiesModal bind:this={bmod} bind:config={config} reset = {reset}/>
-<WorldModal bind:this={wmod} />
+<WorldModal bind:this={wmod}  bind:config={config} reset = {reset}/>
 <SlidersModal bind:this={smod} />

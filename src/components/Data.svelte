@@ -24,9 +24,9 @@ export function addData(datapoint: any[]){
 }
 
 export function update(){
-	data.push({"group": "Ball 1", "key": world.realTime()/1000, "value": 0 -world.dynamicBodies[0].vel.y });
-	data.push({"group": "Ball 2", "key": world.realTime()/1000, "value": 0 - world.dynamicBodies[1].vel.y });
-	data.push({"group": "Ball 3", "key": world.realTime()/1000, "value": 0 - world.dynamicBodies[2].vel.y });
+	world.dynamicBodies.forEach((b)=>{
+		data.push({"group": b.id, "key": world.realTime()/1000, "value": 0 - b.vel.x });
+	})
 	data = data;
 }
 </script>
@@ -34,7 +34,7 @@ export function update(){
 <LineChart
 	data= {data}
 	options={{
-	"title": "Y Velocity over Time",
+	"title": "X Velocity over Time",
 	"axes": {
 		"bottom": {
 			"title": "Time",

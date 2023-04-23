@@ -9,6 +9,7 @@
     } from "carbon-components-svelte";
     import TrashCan from "carbon-icons-svelte/lib/TrashCan.svelte";
     import Add from "carbon-icons-svelte/lib/Add.svelte";
+    import DownToBottom from "carbon-icons-svelte/lib/DownToBottom.svelte";
     let open = false;
     export let config: any;
     export let reset: any;
@@ -22,6 +23,10 @@
 
     function delBody(i: number){
       conf.dynamicBodies.splice(i,1);
+      conf = conf;
+  }
+  function duplicate(i: number){
+      conf.dynamicBodies.push(JSON.parse(JSON.stringify(conf.dynamicBodies[i])));
       conf = conf;
   }
     function addBody(){
@@ -64,6 +69,7 @@
           <th>Ax</th>
           <th>Ay</th>
 
+
         </tr>
         {#each conf.dynamicBodies as b, i}
           <tr>
@@ -77,11 +83,12 @@
             <td><NumberInput hideSteppers  bind:value={b.vy}/></td>
             <td><NumberInput hideSteppers  bind:value={b.ax}/></td>
             <td><NumberInput hideSteppers  bind:value={b.ay}/></td>
-            <Button kind="danger-tertiary" iconDescription="Delete" icon={TrashCan} on:click={()=>{delBody(i)}}/>
+            <td><Button kind="tertiary" iconDescription="Duplicate" icon={DownToBottom} on:click={()=>{duplicate(i)}}/></td>
+            <td><Button kind="danger-tertiary" iconDescription="Delete" icon={TrashCan} on:click={()=>{delBody(i)}}/></td>
           </tr>
         {/each}
       </table>
-      <Button  icon={Add} on:click={addBody}/>
+      <Button  icon={Add} iconDescription="Add Body" on:click={addBody}/>
       
     </ModalBody>
 
