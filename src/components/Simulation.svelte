@@ -40,7 +40,7 @@
             setInterval(() => {update()}, 500)
 
         });
-        function reset(){
+        export function reset(){
             world = jsontoworld(config);
             world.tminus = screen.getT();
             data.reset();
@@ -100,6 +100,7 @@
     </Row>
 </Grid>
 
-<BodiesModal bind:this={bmod} bind:config={config}/>
+
+<BodiesModal bind:this={bmod} bind:config={config} reset = {reset}/>
 <WorldModal bind:this={wmod} />
 <SlidersModal bind:this={smod} />

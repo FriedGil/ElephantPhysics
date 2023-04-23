@@ -43,9 +43,9 @@
       <SideNavLink href="/methodology" on:click={close} text="Methodology" />
       <SideNavLink href="/load" on:click={close} text="Explore" />
       <SideNavMenu text="Examples">
-        <SideNavMenuItem href="/" on:click={close} text="Collisions" />
-        <SideNavMenuItem href="/" on:click={close} text="Pendulum" />
-        <SideNavMenuItem href="/" on:click={close} text="Projectile Motion" />
+        <SideNavMenuItem data-sveltekit-reload href="/load/(dynamicBodies:((id:Elephant+1,x:80,y:50,vx:100,vy:0,ax:0,ay:0,mass:10,radius:50),(id:Elephant+2,x:300,y:50,vx:0,vy:0,ax:0,ay:0,mass:10,radius:50),(id:Ball+1,x:80,y:200,vx:100,vy:0,ax:0,ay:0,mass:10,radius:40),(id:Ball+2,x:300,y:200,vx:0,vy:0,ax:0,ay:0,mass:20,radius:60),(id:Ball+3,x:80,y:400,vx:100,vy:0,ax:0,ay:0,mass:20,radius:60),(id:Ball+4,x:300,y:400,vx:0,vy:0,ax:0,ay:0,mass:10,radius:40)),world:(),objects:())" on:click={close} text="Collisions" />
+        <SideNavMenuItem data-sveltekit-reload href="/" on:click={close} text="Pendulum" />
+        <SideNavMenuItem data-sveltekit-reload href="/" on:click={close} text="Projectile Motion" />
       </SideNavMenu>
     </SideNavItems>
   </SideNav>

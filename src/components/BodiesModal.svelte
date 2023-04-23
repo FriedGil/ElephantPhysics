@@ -4,19 +4,14 @@
       ModalHeader,
       ModalBody,
       ModalFooter,
-      Checkbox,
-      DataTable,
-      TextInput,
       NumberInput,
-      Select,
-      SelectItem,
       Button,
     } from "carbon-components-svelte";
     import TrashCan from "carbon-icons-svelte/lib/TrashCan.svelte";
-    import type { World } from "../physics/world";
-  
+    import Add from "carbon-icons-svelte/lib/Add.svelte";
     let open = false;
     export let config: any;
+    export let reset: any;
     let conf: any = JSON.parse(JSON.stringify(config)); 
 
     export function toggle(){
@@ -29,6 +24,20 @@
       conf.dynamicBodies.splice(i,1);
       conf = conf;
   }
+    function addBody(){
+      conf.dynamicBodies.push({
+        id: "Unnamed",
+        x: 100,
+        y: 100,
+        vx: 0,
+        vy: 0,
+        ax: 0,
+        ay: 0,
+        mass: 0,
+        radius: 0,
+      });
+      conf = conf;
+    }
 
   </script>
 
@@ -39,7 +48,7 @@
 
 </style>
 
-<ComposedModal bind:open on:submit={() => (open = false, config=conf, console.log(conf), console.log(config))}>
+<ComposedModal bind:open on:close={()=>(conf = config)} on:submit={() => (open = false, config=conf, reset())}>
     <ModalHeader label="Bodies" title="Add, Remove, or Edit Bodies" />
     <ModalBody hasForm>
       <table>
@@ -47,6 +56,7 @@
           <th>ID</th>
           <th>Shape</th>
           <th>Radius</th>
+          <th>Mass</th>
           <th>X</th>
           <th>Y</th>
           <th>Vx</th>
@@ -55,12 +65,12 @@
           <th>Ay</th>
 
         </tr>
-        {#key conf.dynamicBodies}
         {#each conf.dynamicBodies as b, i}
           <tr>
-            <td><input value={b.id}/></td>
+            <td><input bind:value={b.id}/></td>
             <td>Circle</td>
             <td><NumberInput  hideSteppers bind:value={b.radius}/></td>
+            <td><NumberInput  hideSteppers bind:value={b.mass}/></td>
             <td><NumberInput hideSteppers  bind:value={b.x}/></td>
             <td><NumberInput hideSteppers  bind:value={b.y}/></td>
             <td><NumberInput hideSteppers  bind:value={b.vx}/></td>
@@ -70,9 +80,8 @@
             <Button kind="danger-tertiary" iconDescription="Delete" icon={TrashCan} on:click={()=>{delBody(i)}}/>
           </tr>
         {/each}
-        {/key}
       </table>
-      <Button>Add Body</Button>
+      <Button  icon={Add} on:click={addBody}/>
       
     </ModalBody>
 

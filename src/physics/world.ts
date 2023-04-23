@@ -81,9 +81,9 @@ export function jsontoworld(input: any): World {
       );
     }
   });
-  input.objects.forEach((object: object)=>{
-    world.staticBodies.push();
-  });
+  // input.objects.forEach((object: object)=>{
+  //   world.staticBodies.push();
+  // });
 
   return world;
 }
@@ -103,8 +103,8 @@ export function worldtojson(world: World) {
       radius: body.shape.radius,
     });
   });
-  result.keys.forEach(()=>{
-    result.world[""]    
-  });
+  // result.keys.forEach(()=>{
+  //   result.world[""]    
+  // });
   return result;
 }
