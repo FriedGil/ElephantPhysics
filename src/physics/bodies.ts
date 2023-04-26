@@ -28,8 +28,8 @@ export class DynamicBody {
   update(t: number) {
     //t is milliseconds
     // this.acc = this.netForce().div(this.mass);
-    this.vel = this.vel.add(this.acc.mult(t / 1000));
-    this.pos = this.pos.add(this.vel.mult(t / 1000));
+    this.vel.add(Vector.div(this.acc, 1000));
+    this.pos.add(Vector.div(this.vel, 1000));
   }
 
   draw(ctx: CanvasRenderingContext2D) {
@@ -39,7 +39,7 @@ export class DynamicBody {
   netForce() {
     let sum: Vector = new Vector(0, 0);
     for (let i = 0; i < this.forces.length; i++) {
-      sum = sum.add(this.forces[i]);
+      sum.add(this.forces[i]);
     }
     return sum;
   }

@@ -6,16 +6,20 @@ export class Vector {
     this.y = y;
   }
   add(v: Vector) {
-    return new Vector(this.x + v.x, this.y + v.y);
+    this.x += v.x;
+    this.y += v.y;
   }
   sub(v: Vector) {
-    return new Vector(this.x - v.x, this.y - v.y);
+    this.x -= v.x;
+    this.y -= v.y;
   }
   mult(s: number) {
-    return new Vector(this.x * s, this.y * s);
+    this.x *= s;
+    this.y *= s;
   }
   div(s: number) {
-    return new Vector(this.x / s, this.y / s);
+    this.x /= s;
+    this.y /= s;
   }
 
   mag() {
@@ -23,9 +27,28 @@ export class Vector {
   }
   norm() {
     const m = this.mag();
-    return new Vector(this.x / m, this.y / m);
+    this.x /= m;
+    this.y /= m;
   }
   dot(v: Vector) {
     return this.x * v.x + this.y * v.y;
   }
+  static add(v1: Vector, v2: Vector){
+    return new Vector(v1.x+v2.x,v1.y+v2.y);
+  }
+  static sub(v1: Vector, v2: Vector){
+    return new Vector(v1.x-v2.x,v1.y-v2.y);
+  }
+  static mult(v1: Vector, s: number){
+    return new Vector(v1.x * s, v1.y *s);
+  }
+  static div(v1: Vector, s: number){
+    return new Vector(v1.x / s, v1.y /s);
+  }
+
+  static norm(v1: Vector){
+    const m = v1.mag();
+    return new Vector(v1.x/m,v1.y/m);
+  }
+
 }
