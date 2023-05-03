@@ -5,6 +5,7 @@
 	import "@carbon/styles/css/styles.css";
 	import "@carbon/charts/styles.css";
     import type { World } from "../physics/world";
+    import { Content } from "carbon-components-svelte";
 	export let world: World;
 	let temp = 0;
 	let data: any[] = [
@@ -31,7 +32,8 @@ export function update(){
 }
 </script>
 
-<LineChart
+<Content>
+	<LineChart
 	data= {data}
 	options={{
 	"title": "X Velocity over Time",
@@ -47,4 +49,6 @@ export function update(){
 	},
 	"height": "400px"
 }}
-	/>
+	/>	
+</Content>
+

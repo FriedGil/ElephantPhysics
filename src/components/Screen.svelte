@@ -17,7 +17,6 @@
     })
 
     function handleResize () {
-        console.log("resizing");
         widthmin = window.innerWidth;
         world.width = Math.min(widthmin/1.2,500);
 	}

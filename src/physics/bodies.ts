@@ -28,8 +28,8 @@ export class DynamicBody {
   update(t: number) {
     //t is milliseconds
     // this.acc = this.netForce().div(this.mass);
-    this.vel.add(Vector.div(this.acc, 1000));
-    this.pos.add(Vector.div(this.vel, 1000));
+    this.vel.add(Vector.div(this.acc, 1000/t));
+    this.pos.add(Vector.div(this.vel, 1000/t));
   }
 
   draw(ctx: CanvasRenderingContext2D) {

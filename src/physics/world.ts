@@ -46,7 +46,7 @@ export class World {
   netForce() {
     let sum: Vector = new Vector(0, 0);
     for (let i = 0; i < this.forces.length; i++) {
-      sum = sum.add(this.forces[i]);
+      sum.add(this.forces[i]);
     }
     return sum;
   }
@@ -110,3 +110,4 @@ export function worldtojson(world: World) {
   // });
   return result;
 }
+

@@ -37,6 +37,7 @@
 
         onMount(()=>{
             url = window.location.origin;
+            reset();
             setInterval(() => {update()}, 500)
 
         });
