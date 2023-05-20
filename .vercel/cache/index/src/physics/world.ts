@@ -1,4 +1,4 @@
-import { type StaticBody, DynamicBody } from "./bodies";
+import { type  StaticBody, DynamicBody } from "./bodies";
 import { collision } from "./collisions";
 import { Vector } from "./vector";
 import { Circle, Elephant } from "./shapes";

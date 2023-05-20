@@ -36,6 +36,7 @@ declare module '$env/static/private' {
 	export const BROWSER: string;
 	export const SHLVL: string;
 	export const npm_config_noproxy: string;
+	export const MOTD_SHOWN: string;
 	export const HOME: string;
 	export const PORT: string;
 	export const TERM_PROGRAM_VERSION: string;
@@ -136,6 +137,7 @@ declare module '$env/dynamic/private' {
 		BROWSER: string;
 		SHLVL: string;
 		npm_config_noproxy: string;
+		MOTD_SHOWN: string;
 		HOME: string;
 		PORT: string;
 		TERM_PROGRAM_VERSION: string;

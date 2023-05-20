@@ -1,21 +1,19 @@
-from flask import Flask
 from flask import Flask, request
 import os 
 from pydantic import Field, BaseModel
-
-
-
-app = Flask(__name__)
-
-
-
-app = Flask(__name__)
 
 import json
 from typing import TypeVar, TypedDict
 
 import openai
 from pydantic import BaseModel, ValidationError
+
+
+
+app = Flask(__name__)
+
+
+
 
 openai.api_key = os.environ.get('VITE_OPENAI_API_KEY')
 
@@ -142,7 +140,7 @@ class PhysicsSchema(OpenAIModel):
     Convert the following description of a physics scenario into an array of bodies.
     Assign logical default properties to unspecified information.
     The default radius is 20.
-    The default x and y position is (100,100)
+    The default x and y position is (100,100).
 
     {content}
     """
