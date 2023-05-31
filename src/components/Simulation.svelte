@@ -75,8 +75,6 @@
     <Column>
         <Row>
             <Tile>
-                <button on:click={get}/>
-                {output}
                 <h2>
                     Screen
                 </h2>
