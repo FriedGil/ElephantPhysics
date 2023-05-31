@@ -50,21 +50,21 @@
             data.reset();
         }
 
-        async function get(){
-            output = "Loading...";
-            await fetch('/api/model', {
-                method: 'POST',
-                headers: {
-                'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({"text": "A ball is at the peak of parabolic motion. Its initial x velocity was 5. Another ball is still on the ground."})
-            })
-                .then(response => response.text())
-                .then(data => output = data)
-                .catch(error => console.error(error));
-                config = JSON.parse(output);
-                reset();
-            }
+        // async function get(){
+        //     output = "Loading...";
+        //     await fetch('/api/model', {
+        //         method: 'POST',
+        //         headers: {
+        //         'Content-Type': 'application/json'
+        //         },
+        //         body: JSON.stringify({"text": "A ball is at the peak of parabolic motion. Its initial x velocity was 5. Another ball is still on the ground."})
+        //     })
+        //         .then(response => response.text())
+        //         .then(data => output = data)
+        //         .catch(error => console.error(error));
+        //         config = JSON.parse(output);
+        //         reset();
+        //     }
         
 
     </script>
