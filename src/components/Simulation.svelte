@@ -20,10 +20,6 @@
         import BodiesModal from "./BodiesModal.svelte";
         import SlidersModal from "./SlidersModal.svelte";
         import WorldModal from "./WorldModal.svelte";
-        try { fetch('/api/') } 
-        catch{
-            console.log("api error")
-        }
         export let config: any;
         let output = "Output will be produced here.";
         let world: World = jsontoworld(config);
