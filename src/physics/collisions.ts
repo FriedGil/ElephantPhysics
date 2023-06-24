@@ -1,86 +1,134 @@
-import type { DynamicBody } from "./bodies";
-import { Circle, Elephant } from "./shapes";
-import { Vector } from "./vector";
-import type { World } from "./world";
+import { Vector } from "./Vector";
+import { Particle } from "./Particle";
 
-export function collision(world: World) {
-  for (let i = 0; i < world.dynamicBodies.length; i++) {
-    for (let j = 0; j < world.dynamicBodies.length; j++) {
-      if (i != j) {
-        if (touching(world.dynamicBodies[i], world.dynamicBodies[j])) {
-          const b1: DynamicBody = world.dynamicBodies[i];
-          const b2: DynamicBody = world.dynamicBodies[j];
-          const d: number =  Vector.sub(b1.pos,b2.pos).mag();
-          const r1: number = b1.shape.radius;
-          const r2: number = b2.shape.radius;
-          const overlap: number = r1 + r2 - d;
-          const n: Vector = Vector.norm(Vector.sub(b1.pos,b2.pos));
-          b1.pos.add(Vector.mult(n,overlap / 2));
-          b2.pos.sub(Vector.mult(n,overlap / 2));
-          const v1n: number = b1.vel.dot(n);
-          const v2n: number = b2.vel.dot(n);
-          const v1t: Vector = Vector.sub(b1.vel,(Vector.mult(n,v1n)));
-          const v2t: Vector = Vector.sub(b2.vel,(Vector.mult(n,v2n)));
-          const v1nNew =
-            (v1n * (b1.mass - b2.mass) + 2 * b2.mass * v2n) /
-            (b1.mass + b2.mass);
-          const v2nNew =
-            (v2n * (b2.mass - b1.mass) + 2 * b1.mass * v1n) /
-            (b1.mass + b2.mass);
-          b1.vel = Vector.add(v1t,(Vector.mult(n,v1nNew)));
-          b2.vel = Vector.add(v2t,(Vector.mult(n,v2nNew)));
-        }
-      }
+export function approxcol(p1: Particle, p2: Particle, timeStep = 0.01, maxIterations = 10000, initialTime=0): number{
+    let t = 0;
+    let p1pos = p1.p.copy();
+    let p2pos = p2.p.copy();
+    let p1vel: Vector = p1.v.copy();
+    let p2vel = p2.v.copy();
+    let p1acc = p1.a.copy();
+    let p2acc = p2.a.copy();
+    p1vel.add(Vector.multiply(p1acc,initialTime));
+    p2vel.add(Vector.multiply(p1acc,initialTime));
+    p1pos.add(Vector.multiply(p1vel,initialTime));
+    p2pos.add(Vector.multiply(p2vel,initialTime));
+
+  for (let i = 0; i < maxIterations; i++) {
+    const v1 = Vector.add(p1vel, Vector.multiply(p1acc,t));
+    const v2 = Vector.add(p2vel, Vector.multiply(p2acc,t));
+    p1pos.add(Vector.multiply(v1,timeStep));
+    p2pos.add(Vector.multiply(v2,timeStep));
+    if (Vector.distance(p1pos,p2pos) <= p1.r + p2.r){
+        return t;
     }
-    // edge collision;
-    const leftbound = 0;
-    const upbound = 0;
-    const rightbound = world.width;
-    const downbound = world.height;
-    if (
-      world.dynamicBodies[i].pos.x - world.dynamicBodies[i].shape.radius <
-      leftbound
-    ) {
-      world.dynamicBodies[i].pos.x =
-        leftbound + world.dynamicBodies[i].shape.radius;
-      world.dynamicBodies[i].vel.x *= -1;
-    }
-    if (
-      world.dynamicBodies[i].pos.x + world.dynamicBodies[i].shape.radius >
-      rightbound
-    ) {
-      world.dynamicBodies[i].pos.x =
-        rightbound - world.dynamicBodies[i].shape.radius;
-      world.dynamicBodies[i].vel.x *= -1;
-    }
-    if (
-      world.dynamicBodies[i].pos.y - world.dynamicBodies[i].shape.radius <
-      upbound
-    ) {
-      world.dynamicBodies[i].pos.y =
-        upbound + world.dynamicBodies[i].shape.radius;
-      world.dynamicBodies[i].vel.y *= -1;
-    }
-    if (
-      world.dynamicBodies[i].pos.y + world.dynamicBodies[i].shape.radius >
-      downbound
-    ) {
-      world.dynamicBodies[i].pos.y =
-        downbound - world.dynamicBodies[i].shape.radius;
-      world.dynamicBodies[i].vel.y *= -1;
-    }
+    t += timeStep;
   }
+  return Number.POSITIVE_INFINITY;
 }
 
-function touching(b1: DynamicBody, b2: DynamicBody): boolean {
-  if (
-    (b1.shape instanceof Circle || b1.shape instanceof Elephant) &&
-    (b2.shape instanceof Circle || b2.shape instanceof Elephant)
-  ) {
-    const d = Vector.sub(b1.pos,b2.pos).mag();
-    const r1 = b1.shape.radius;
-    const r2 = b2.shape.radius;
-    return d < r1 + r2;
-  }
-  return false;
+
+export function approxcolHybrid(p1: Particle, p2: Particle){
+    let xtimebound1 = ( Math.sqrt( Math.pow(( p1.v.x-p2.v.x - (p1.r + p2.r)),2) - 4 * (p1.p.x-p2.p.x)*(0.5*p1.a.x-0.5*p2.a.x)) - p1.v.x + p2.v.x ) / (p1.a.x-p2.a.x);
+    let xtimebound2 = ( Math.sqrt( Math.pow(( p1.v.x-p2.v.x),2) - 4 * (p1.p.x-p2.p.x)*(0.5*p1.a.x-0.5*p2.a.x)) - p1.v.x + p2.v.x ) / (p1.a.x-p2.a.x);
+    let min = Math.min(xtimebound1,xtimebound2);
+    let max = Math.max(xtimebound1,xtimebound2);
+    return approxcol(p1,p2,0.01,Math.min((max-min)/0.001,10_000),min);
+    
+
+}
+
+export function isColl(p1: Particle, p2: Particle){
+    return (Vector.distance(p1.p,p2.p) > p1.r + p2.r) ;
+}
+
+export function resolvecol(p1: Particle, p2: Particle): [Particle,Particle]{
+    if (Vector.distance(p1.p,p2.p) > p1.r + p2.r){
+        console.log("shouldn't be here");
+    };
+
+    const d: number =  Vector.subtract(p1.p,p2.p).magnitude();
+    const overlap: number = p1.r + p2.r - d;
+    const n: Vector = Vector.normalize(Vector.subtract(p1.p,p2.p));
+
+    //alternate resolution
+    
+    const p1vx = ((p1.m-p2.m)*p1.v.x + 2*p2.m*p2.v.x)/(p1.m+p2.m);
+    const p1vy = ((p1.m-p2.m)*p1.v.y + 2*p2.m*p2.v.y)/(p1.m+p2.m);
+    const p2vx = ((p2.m-p1.m)*p2.v.x + 2*p1.m*p1.v.x)/(p2.m+p1.m);
+    const p2vy = ((p2.m-p1.m)*p2.v.y + 2*p1.m*p1.v.y)/(p2.m+p1.m);
+
+    const p1new = new Particle(p1.p, new Vector(p1vx,p1vy),p1.a.copy(),p1.m,p1.r, p1.id);
+    const p2new = new Particle(p2.p, new Vector(p2vx,p2vy),p2.a.copy(),p2.m,p2.r, p2.id);
+
+    // const v1n: number = Vector.dot(p1.v,n);
+    // const v2n: number = Vector.dot(p2.v,n);
+
+    // const v1t: Vector = Vector.subtract(p1.v,(Vector.multiply(n,v1n)));
+    // const v2t: Vector = Vector.subtract(p2.v,(Vector.multiply(n,v2n)));
+    // const v1nNew =
+    //   (v1n * (p1.m - p2.m) + 2 * p2.m * v2n) /
+    //   (p1.m + p2.m);
+    // const v2nNew =
+    //   (v2n * (p2.m - p1.m) + 2 * p1.m * v1n) /
+    //   (p1.m + p2.m);
+
+    // const p1new = new Particle(p1.p, Vector.add(v1t,(Vector.multiply(n,v1nNew))),p1.a.copy(),p1.m,p1.r);
+    // const p2new = new Particle(p2.p, Vector.add(v2t,(Vector.multiply(n,v2nNew))),p2.a.copy(),p2.m,p2.r);
+    // const p1new = new Particle(Vector.add(p1.p, Vector.multiply(n,overlap / 2)), Vector.add(v1t,(Vector.multiply(n,v1nNew))),p1.a.copy(),p1.m,p1.r);
+    // const p2new = new Particle(Vector.subtract(p2.p, Vector.multiply(n,overlap / 2)), Vector.add(v2t,(Vector.multiply(n,v2nNew))),p2.a.copy(),p2.m,p2.r);
+
+    return [p1new,p2new];
+}
+
+export function getNextColl(particles: Particle[]): [number, number[]] {
+    let mintime = Number.POSITIVE_INFINITY;
+    let minids = [-1, -1];
+    for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+            if (j != i && !(minids[0] == j && minids[1] == i)) {
+                let temp = approxcolHybrid(particles[i], particles[j]);
+                if (temp < mintime) {
+                    mintime = temp;
+                    minids = [i, j];
+                }
+            }
+        }
+    }
+    return [mintime, minids];
+}
+
+export function getNextCollTime(particles: Particle[]): number {
+    let mintime = Number.POSITIVE_INFINITY;
+    for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+                let temp = approxcolHybrid(particles[i], particles[j]);
+                if (temp < mintime) {
+                    mintime = temp;
+                }
+        }
+    }
+    return mintime;
+}
+
+export function worldcolres(particles: Particle[]){
+    const tempParticles =  particles.map((b) => b);
+    for (let i = 0; i < tempParticles.length; i++) {
+        for (let j = i + 1; j < tempParticles.length; j++) {
+            if (Vector.distance(tempParticles[i].p,tempParticles[j].p) <= tempParticles[i].r + tempParticles[j].r){
+               let p1 = tempParticles[i];
+               let p2 = tempParticles[j];
+               const p1vx = ((p1.m-p2.m)*p1.v.x + 2*p2.m*p2.v.x)/(p1.m+p2.m);
+               const p1vy = ((p1.m-p2.m)*p1.v.y + 2*p2.m*p2.v.y)/(p1.m+p2.m);
+               const p2vx = ((p2.m-p1.m)*p2.v.x + 2*p1.m*p1.v.x)/(p2.m+p1.m);
+               const p2vy = ((p2.m-p1.m)*p2.v.y + 2*p1.m*p1.v.y)/(p2.m+p1.m);
+                p1.v = new Vector(p1vx,p1vy);
+                p2.v = new Vector(p2vx,p2vy);
+            }   
+        }
+    }
+    return tempParticles;
+}
+function roundToNearestTenth(num: number): number {
+  return Math.round(num * 10) / 10;
 }

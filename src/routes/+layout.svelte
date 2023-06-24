@@ -1,12 +1,14 @@
 <script>
-    import "carbon-components-svelte/css/g10.css";
-    import '@carbon/charts/styles.css';
-    import {Content} from "carbon-components-svelte";
-  </script>
-  
+    import { Content, Header, Tile } from "carbon-components-svelte";
+import "carbon-components-svelte/css/all.css";
+</script>
 
-  
-  <Content>
+
+<Header platformName="Elephant Physics" >
+
+</Header>
+
+<Content>
     <slot/>
-  </Content>
-  
+
+</Content>
