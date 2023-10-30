@@ -10,7 +10,7 @@
     import { World, json2w, w2json } from "../physics/World";
     import Data from "../components/Data.svelte";
     import EditorModal from "../components/EditorModal.svelte";
-    const p1 = new Particle(new Vector(-40,100), new Vector(0,0), new Vector(10,0), 5, 10);
+    const p1 = new Particle(new Vector(0,150), new Vector(0,0), new Vector(0,-10), 5, 10);
     const p2 = new Particle(new Vector(0,100), new Vector(0,0), new Vector(0,0), 5, 10);
 
     let bMod: EditorModal;

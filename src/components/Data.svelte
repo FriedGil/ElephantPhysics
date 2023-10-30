@@ -110,7 +110,6 @@
 <Tabs autoWidth style="overflow: hidden;">
   
     <Tab label="Complete Graph" />
-    <Tab label="In-Sync Graph" />
     <Tab label="Display Settings" />
     <svelte:fragment slot="content">
       <TabContent>
@@ -146,7 +145,6 @@
         }}
         />	        
       </TabContent>
-      <TabContent>Graph Here</TabContent>
       <TabContent>Display</TabContent>
     </svelte:fragment>
 </Tabs>

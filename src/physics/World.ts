@@ -14,6 +14,8 @@ export class World {
     getState(t: number): Particle[] {
         return this.state.evaluate(t);
     }
+
+
     stateConstructor(maxTime: number = 200): StateNode {
         let s = new StateNode(getNextCollTime(this.particles), getStateFunc(this.particles));
         const tree = s;
@@ -30,7 +32,7 @@ export class World {
           s = s.right;
 
         }
-      
+        console.log(tree);
         return tree;
       }
       

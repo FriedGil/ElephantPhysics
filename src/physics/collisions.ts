@@ -33,9 +33,21 @@ export function approxcolHybrid(p1: Particle, p2: Particle){
     let xtimebound2 = ( Math.sqrt( Math.pow(( p1.v.x-p2.v.x),2) - 4 * (p1.p.x-p2.p.x)*(0.5*p1.a.x-0.5*p2.a.x)) - p1.v.x + p2.v.x ) / (p1.a.x-p2.a.x);
     let min = Math.min(xtimebound1,xtimebound2);
     let max = Math.max(xtimebound1,xtimebound2);
-    return approxcol(p1,p2,0.01,Math.min((max-min)/0.001,10_000),min);
-    
+    let num = approxcol(p1,p2,0.01,Math.min((max-min)/0.001,10_000),min);
+    if (isFinite(num)){
+        return num;
+    }
+    else{
+        return approxcolHybridY(p1,p2);
+    }
+}
 
+export function approxcolHybridY(p1: Particle, p2: Particle){
+    let ytimebound1 = ( Math.sqrt( Math.pow(( p1.v.y-p2.v.y - (p1.r + p2.r)),2) - 4 * (p1.p.y-p2.p.y)*(0.5*p1.a.y-0.5*p2.a.y)) - p1.v.y + p2.v.y ) / (p1.a.y-p2.a.y);
+    let ytimebound2 = ( Math.sqrt( Math.pow(( p1.v.y-p2.v.y),2) - 4 * (p1.p.y-p2.p.y)*(0.5*p1.a.y-0.5*p2.a.y)) - p1.v.y + p2.v.y ) / (p1.a.y-p2.a.y);
+    let min = Math.min(ytimebound1,ytimebound2);
+    let max = Math.max(ytimebound1,ytimebound2);
+    return approxcol(p1,p2,0.01,Math.min((max-min)/0.001,10_000),min);
 }
 
 export function isColl(p1: Particle, p2: Particle){
